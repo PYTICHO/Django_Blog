@@ -1,0 +1,24 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+
+<!-- для блоков :     {% block namee %}{% endblock %}       -->
+
+<!-- for :            {% for i in 1 %}{% endfor %}      -->
+
+<!-- if :             {% if True %}{% endif %}                 -->
+
+
+{% block content %}
+
+<form id="user-register-form" method="post">
+    {% csrf_token %}
+
+    <h3>Авторизация</h3>
+    {{ form.as_p }}
+
+
+    <button type="submit">Авторизация</button>
+</form>
+
+{% endblock %}

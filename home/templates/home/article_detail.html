@@ -1,0 +1,116 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+<!-- для блоков :     {% block namee %}{% endblock %}       -->
+
+<!-- for :            {% for i in 1 %}{% endfor %}      -->
+
+<!-- if :             {% if True %}{% endif %}                 -->
+
+
+
+
+{% block title %} {{ article.title|truncatewords:3 }} {% endblock %}
+
+
+<!-- Контент -->
+
+{% block content %}
+<div class="container">
+    <ul class="d-flex justify-content-between flex-row navbar-nav mr-auto mt-2 mt-md-0">
+        <li style="margin-left: 8%;"><h2 class="fs-1 text-momospace text-break">{{ article.title }}</h2></li>
+        <ul class="navbar-nav">
+            <li class="pt-3"><small>{{ article.time_create }}</small></li>
+            <li>
+                Автор: {{article.author.username}}
+            </li>
+        </ul>
+    </ul>
+    
+    {% if article.image %}
+        <img style="height: 300px" src="{{ article.image.url }}" alt="">
+    {% else %}
+        <img style="height: 300px" src="{% static 'home/img/default.jpg' %}" alt="">
+    {% endif %}
+
+    <div style="margin-left:4%;" class="fs-5 text-break">{{ article.text }}</div>
+
+
+</div>
+<hr class="w-100" style="border-top: 10px solid; color: orange;">
+
+<!-- Создание Формы комментария -->
+<p>Добавить комментарий</p>
+
+
+
+<div class="col-4">
+    <ul class="navbar-nav mr-auto mt-2 mt-md-0" style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+        <li>
+            <form action="" id="comments-form" method="post">
+                {% csrf_token %}
+
+                {% for f in form %}
+                    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+                {% endfor %}
+                
+            </form>
+        </li>
+    
+
+        <li class="mt-3 mx-2">
+            <div class="modal-footer">
+                {% if request.user.is_authenticated  %}
+                    <button form="comments-form" type="submit" class="btn btn-primary">Добавить</button>
+                {% else %}
+                    <button onclick="UserNotAuth()" class="btn btn-primary">Добавить</button>
+                {% endif %}
+            </div>
+        </li>
+    </ul>
+    
+
+</div>
+
+<hr style="border-top: 10px solid; color: orange;">
+
+
+
+
+
+<!-- Комментарии -->
+<div class="mx-3">
+   {% for comment in comments %}
+    
+        {% if comment.status %}
+
+            <div class="alert alert-success" role="alert">
+                <div class="d-flex flex-row">
+
+                    <ul style="background-color: black ; color:white; border-radius: 1em; padding: 10px;" class="navbar-nav mt-2 mt-md-0">
+                        
+                        <li><small>Автор: {{ comment.comment_author.username }}</span></small></li>
+                        <li><small>{{ comment.time_create }}</small></li>
+                        
+                    </ul>
+
+                    
+                    <h6 class="mb-1 ml-5">{{ comment.text }}</h6>
+                </div>
+            </div>
+            
+            <hr>
+        {% endif %}
+    {% endfor %}     
+</div>
+
+
+
+
+<script>
+    function UserNotAuth() {
+        alert("Вы не авторизованы!")
+    }
+</script>
+
+{% endblock %}

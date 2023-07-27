@@ -1,0 +1,49 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+<!-- для блоков :     {% block namee %}{% endblock %}       -->
+
+<!-- for :            {% for i in 1 %}{% endfor %}      -->
+
+<!-- if :             {% if True %}{% endif %}                 -->
+
+
+{% block title %} {{ title }} {% endblock %}
+
+
+
+<!-- Контент -->
+{% block content %}
+
+{% if articles  %}
+    {% for article in articles %}
+
+        {% if article.is_published %}
+            <a href="{{ article.get_absolute_url }}" style="text-decoration: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="navbar-nav mr-auto mt-2 mt-md-0" style="display: flex;flex-direction: row;justify-content: space-between;">
+                            
+                            <li><span style="color:black;">Название:</span> {{ article.title }}</li>
+                            <ul class="navbar-nav">
+                                <li><span style="color:black;">Автор: </span>
+                                    {{ article.author.username }}
+                                </li>
+                                <li><span style="color:black;">Дата:</span> {{ article.time_create }}</li>
+                            </ul>
+
+                        </ul>
+                    </div>
+                    
+                </div>
+            </a>
+        {% endif %}
+        
+    {% endfor %}
+{% else %}
+    <div style="height: 50vh;" class="w-100 d-flex justify-content-center align-items-center">
+        <h1 class="fs-1 ">Контента НЕТ!</h1>
+    </div>
+{% endif %}
+
+{% endblock %}

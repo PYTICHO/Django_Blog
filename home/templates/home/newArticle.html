@@ -1,0 +1,24 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+<!-- для блоков :     {% block namee %}{% endblock %}       -->
+
+<!-- for :            {% for i in 1 %}{% endfor %}      -->
+
+<!-- if :             {% if True %}{% endif %}                 -->
+{% block content %}
+    {% if request.user.is_authenticated %}
+            <form id="newArticle" method="post">
+                {% csrf_token %}
+
+                <h1>Новая статья</h1>
+                {{ form.as_p }}
+
+                <button form="newArticle" type="submit">Добавить</button>
+            </form>
+    {% else %}
+            <script>
+                window.location.href = '{% url "home" %}'
+            </script>       
+    {% endif %}
+{% endblock %}
